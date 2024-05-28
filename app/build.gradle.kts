@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -47,6 +50,8 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.10.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("org.mockito:mockito-android:2.22.0")
+    testImplementation("org.robolectric:robolectric:4.12.2")
+    testImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

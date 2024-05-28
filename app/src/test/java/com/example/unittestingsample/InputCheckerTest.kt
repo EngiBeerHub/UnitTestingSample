@@ -1,5 +1,8 @@
 package com.example.unittestingsample
 
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnitRunner
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
 import org.hamcrest.CoreMatchers.`is`
@@ -8,8 +11,23 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.assertj.core.api.Assertions.*
+import com.nhaarman.mockitokotlin2.*
+import org.robolectric.AndroidMetadata
+import org.robolectric.RobolectricTestRunner
 
-@RunWith(JUnit4::class)
+@RunWith(AndroidJUnit4::class)
+class JetpackTest {
+    @Test
+    fun gettingContextTest() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val appName = context.getString(R.string.app_name)
+        assertThat(appName).isEqualTo("UnitTestingSample")
+
+    }
+}
+
+@RunWith(RobolectricTestRunner::class)
 class InputCheckerTest {
     private lateinit var target: InputChecker
 
@@ -52,9 +70,11 @@ class InputCheckerTest {
         assertThat(actual, `is`(false))
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun isValid_givenNull_throwsIllegalArgumentException() {
-        target.isValid(null)
+    @Test
+    fun isValid_givenBlank_throwsIllegalArgumentException() {
+        assertThatExceptionOfType(IllegalArgumentException::class.java)
+            .isThrownBy { target.isValid("") }
+            .withMessage("Cannot be blank")
     }
 
     @Ignore("テスト対象が仮実装なので一時的にスキップ")
